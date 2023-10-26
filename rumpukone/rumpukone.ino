@@ -39,7 +39,7 @@ void setup()
   Serial.println(RPI_PICO_TIMER_INTERRUPT_VERSION);
   Serial.print(F("CPU Frequency = ")); Serial.print(F_CPU / 1000000); Serial.println(F(" MHz"));
 
-  if (ITimer1.attachInterruptInterval(22, TimerHandler1))
+  if (ITimer1.attachInterruptInterval(23, TimerHandler1))
   {
     Serial.print(F("Starting ITimer1 OK, millis() = ")); Serial.println(millis());
 
