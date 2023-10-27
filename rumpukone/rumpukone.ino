@@ -30,29 +30,39 @@ Adafruit_USBD_MIDI usb_midi;
 // and attach usb_midi as the transport.
 MIDI_CREATE_INSTANCE(Adafruit_USBD_MIDI, usb_midi, MIDI);
 
-#define TIMER1_INTERVAL_MS    1000
-int i_0=0;
-int i_1=0;
-int i_2=0;
-int i_3=0;
-int i_4=0;
-int i_5=0;
-int i_6=0;
-int i_7=0;
-unsigned int tot=0;
+int i_0=_00_len;
+int i_1=_01_len;
+int i_2=_02_len;
+int i_3=_03_len;
+int i_4=_04_len;
+int i_5=_05_len;
+int i_6=_06_len;
+int i_7=_07_len;
+int tot=0;
+int tot2=0;
+static const int h=32768;
 
 bool TimerHandler1(struct repeating_timer *t)
 {
   (void) t;
-  tot=(s_00[i_0]+s_01[i_1]+s_02[i_2]+s_03[i_3]+s_04[i_4]+s_05[i_5]+s_06[i_6]+s_07[i_7]) >> 3;
-  if (i_0<s_00_len) i_0++;
-  if (i_1<s_01_len) i_1++;
-  if (i_2<s_02_len) i_2++;
-  if (i_3<s_03_len) i_3++;
-  if (i_4<s_04_len) i_4++;
-  if (i_5<s_05_len) i_5++;
-  if (i_6<s_06_len) i_6++;
-  if (i_7<s_07_len) i_7++;
+  tot=((int)_00[i_0]-h) + ((int)_01[i_1]-h) + ((int)_02[i_2]-h) + ((int)_03[i_3]-h) + ((int)_04[i_4]-h) + ((int)_05[i_5]-h) + ((int)_06[i_6]-h) + ((int)_07[i_7]-h);
+//  tot=((int)_00[i_0]-h);
+//  tot=_00[0];
+  if (i_0<_00_len) i_0++;
+  if (i_1<_01_len) i_1++;
+  if (i_2<_02_len) i_2++;
+  if (i_3<_03_len) i_3++;
+  if (i_4<_04_len) i_4++;
+  if (i_5<_05_len) i_5++;
+  if (i_6<_06_len) i_6++;
+  if (i_7<_07_len) i_7++;
+  
+
+//  Serial.print(tot);
+//  Serial.print(" ");
+  tot=(tot >> 1)+h;
+//  Serial.println(tot);
+  
 
   analogWrite(2,tot);
 
@@ -76,20 +86,39 @@ void handleNoteOn(byte channel, byte pitch, byte velocity)
   switch(pitch) {
     case 36:
       i_0=0;
+      Serial.println("0");
+      break;
     case 37:
       i_1=0;
+      Serial.println("1");
+      break;
     case 38:
       i_2=0;
+      Serial.println("2");
+      break;
     case 39:
       i_3=0;
+      Serial.println("3");
+      break;
     case 40:
       i_4=0;
+      Serial.println("4");
+      break;
     case 41:
       i_5=0;
+      Serial.println("5");
+      break;
     case 42:
       i_6=0;
+      Serial.println("6");
+      break;
     case 43:
       i_7=0;
+      Serial.println("7");
+      break;
+    default:
+      Serial.println("muuuu");
+      break;
   }
 }
 
@@ -124,7 +153,7 @@ void setup()
   analogWriteResolution(16);
   analogWrite(2,32768);
 
-  ITimer1.attachInterruptInterval(23, TimerHandler1);
+  ITimer1.attachInterruptInterval(25, TimerHandler1);
 
   // Initialize MIDI, and listen to all MIDI channels
   // This will also call usb_midi's begin()
